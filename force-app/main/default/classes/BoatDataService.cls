@@ -5,7 +5,6 @@ public with sharing class BoatDataService {
     public static final String TYPE_TYPE = 'Type'; 
 
     public static List<Boat__c> getBoats(String boatTypeId) {
-        // Without an explicit boatTypeId, the full list is desired
         String query = 'SELECT '
                      + 'Name, Description__c, Geolocation__Latitude__s, '
                      + 'Geolocation__Longitude__s, Picture__c, Contact__r.Name, '
@@ -86,9 +85,7 @@ public with sharing class BoatDataService {
         ];
     }
 
-    // Assume this may be an API that return this data, not a SOQL query
     public static String getBoatsByLocation(Decimal latitude, Decimal longitude, String boatTypeId) {
-        // Without an explicit boatTypeId, the full list is desired
         String query = 'SELECT Name, Geolocation__Latitude__s, Geolocation__Longitude__s FROM Boat__c ';
         if (String.isNotBlank(boatTypeId)) {
             query += 'WHERE BoatType__c = :boatTypeId ';
