@@ -15,6 +15,7 @@ public with sharing class BoatDataService {
             query += ' WHERE BoatType__c = :boatTypeId';
         }
         query += ' WITH SECURITY_ENFORCED ';
+        system.debug('query is:' + query);
         return Database.query(query);
     }
 
@@ -25,6 +26,7 @@ public with sharing class BoatDataService {
                                     WHERE Id = :boatId 
                                     WITH SECURITY_ENFORCED];
         if (parentBoat.isEmpty()) {
+            system.debug('similar boats is:' + similarBoats);
             return similarBoats;
         }
         if (similarBy == LENGTH_TYPE) {
@@ -105,5 +107,6 @@ public with sharing class BoatDataService {
         
         update boatsForUpdate;
         return 'Success: Boats updated successfully';
+
     }
 }
