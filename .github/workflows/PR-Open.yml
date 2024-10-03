@@ -1,12 +1,23 @@
-name: Developer Pipeline
-run-name: ${{ github.actor }} is running pipeline on ${{ github.repository }}
-on: 
-  push:
-    branches:
-      - Develop
-      - main
-    paths:
-      - 'force-app/**'
+# Unique name for this workflow
+name: Validate PR on develop branch
+
+# Definition when the workflow should run
+on:
+    # The workflow will run whenever an event happens on a pull request
+    pull_request:
+      # The events are that a PR is opened, or when a commit is pushed
+      # to a branch that has an existing pull request
+      types: [opened, synchronize]
+      # The branches filter allows to specify that this workflow should only
+      # run if the branch name is "develop". This way we prevent this workflow
+      # from running when PRs are opened on other branches
+      branches: [ Develop ]
+      # We only care about changes to the force-app directory, which is the
+      # root directory of the sfdx project. This prevents the job from running
+      # when changing non-salesforce files (like this yml file).
+      paths:
+        - 'force-app/**'
+
       
 jobs:
   Explore-GitHub-Actions:
@@ -80,4 +91,4 @@ jobs:
       
       - name: Deploy Delta components to Salesforce
         run: |
-          sf project deploy start --manifest delta/package/package.xml --test-level RunLocalTests --target-org HubOrg --coverage-formatters clover
+          sf project deploy start --manifest delta/package/package.xml  --checkonly --testlevel RunLocalTests  --json --target-org HubOrg --coverage-formatters clover
