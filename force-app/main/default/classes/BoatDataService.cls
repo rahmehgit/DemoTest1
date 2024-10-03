@@ -5,6 +5,7 @@ public with sharing class BoatDataService {
     public static final String TYPE_TYPE = 'Type'; 
 
     //Added a new comment for automatic deployment
+    //Added 2nd Comment
 
     public static List<Boat__c> getBoats(String boatTypeId) {
         // Without an explicit boatTypeId, the full list is desired
