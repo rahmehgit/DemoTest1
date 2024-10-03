@@ -28,7 +28,7 @@ jobs:
           
       - name: Install NPM
         run: |
-          npm install
+          npm install --force
       # Install the SFDX CLI using the npm command
       - name: Install the SFDX CLI
         run: |
