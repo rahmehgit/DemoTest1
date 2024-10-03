@@ -1,6 +1,14 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+name: Developer Pipeline
+run-name: ${{ github.actor }} is running pipeline on ${{ github.repository }}
+on: 
+  pull_request:
+    types: [closed]
+    branches:
+      - Develop
+      - main
+    paths:
+      - 'force-app/**'
+      
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -20,6 +28,7 @@ jobs:
       
   build:
     runs-on: ubuntu-latest
+    environment: Development
     steps:
       # Checkout the Source code from the latest commit
       - uses: actions/checkout@v3
@@ -34,13 +43,26 @@ jobs:
         run: |
           npm install @salesforce/cli --global
           sf --help
-      - name: Decrypt the server.key.enc file & store inside assets folder
+          
+      - name: Install the sfdx-git-delta plugin
         run: |
-          openssl enc -nosalt -aes-256-cbc -d -in assets/server.key.enc -out assets/server.key -base64 -K DE3B4F6346E0CFA95CA695168A0FD8DA4D06AE808A0AFA9A4DBD2502D5DD6FE7 -iv AC767FEDCF2105140E84B62495C3F43A
+          echo 'y' | sf plugins install sfdx-git-delta
+          
+      - name: Decrypt the server.key.enc file & store it inside assets folder
+        run: |
+          openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTION_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.DECRYPTION_KEY }} -iv ${{ secrets.DECRYPTION_IV }}
           
       - name: Authenticate Salesforce ORG
         run: |
-          sf org login jwt --client-id 3MVG9GCMQoQ6rpzTx2ejgtjBOAx.nBREkvdIpoJdSZqgDhN1YVX1IFFCZXutKC9EP0ZgePNTLd9T4v6lbg9X2 --jwt-key-file assets/server.key --username mehta.rahul@playful-badger-469op2.com --set-default --alias HubOrg --instance-url https://playful-badger-469op2-dev-ed.trailblaze.my.salesforce.com       
-      - name: Validate Source Code Against Salesforce ORG
+          sf org login jwt --client-id ${{ secrets.HUB_CONSUMER_KEY }} --jwt-key-file  ${{ secrets.JWT_KEY_FILE }} --username ${{ secrets.HUB_USER_NAME }} --set-default --alias HubOrg --instance-url ${{ secrets.HUB_LOGIN_URL }}  
+      
+      - name: Generate the package.xml for delta files
         run: |
-          sf project deploy start --source-dir force-app --test-level RunLocalTests --target-org HubOrg --coverage-formatters clover
+          mkdir delta
+          sf sgd source delta --to "HEAD" --from "HEAD~1" --output "./delta" --ignore-whitespace -d -i .sgdignore
+          echo "--- package.xml generated with added and modified metadata ---"
+          cat delta/package/package.xml
+      
+      - name: Deploy Delta components to Salesforce
+        run: |
+          sf project deploy start --manifest delta/package/package.xml --test-level RunLocalTests --target-org HubOrg --coverage-formatters clover
