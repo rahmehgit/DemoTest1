@@ -54,8 +54,8 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-        name: cli-scan-report
-        path: reports/scan-reports.html
+          name: cli-scan-report
+          path: reports/scan-reports.html
           
       - name: Install the sfdx-git-delta plugin
         run: |
