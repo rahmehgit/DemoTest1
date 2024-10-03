@@ -40,7 +40,7 @@ jobs:
           
       - name: Authenticate Salesforce ORG
         run: |
-          sf org login jwt --client-id 3MVG9GCMQoQ6rpzTx2ejgtjBOAx.nBREkvdIpoJdSZqgDhN1YVX1IFFCZXutKC9EP0ZgePNTLd9T4v6lbg9X2 --jwt-key-file /Users/mehta.rahul/JWT/server.key --username mehta.rahul@playful-badger-469op2.com  --alias my-hub-org         
+          sf org login jwt --client-id 3MVG9GCMQoQ6rpzTx2ejgtjBOAx.nBREkvdIpoJdSZqgDhN1YVX1IFFCZXutKC9EP0ZgePNTLd9T4v6lbg9X2 --jwt-key-file assets/server.key --username mehta.rahul@playful-badger-469op2.com --set-default --alias HubOrg --instance-url https://playful-badger-469op2-dev-ed.trailblaze.lightning.force.com       
       - name: Validate Source Code Against Salesforce ORG
         run: |
           sf project deploy start --source-dir force-app --test-level RunLocalTests --target-org HubOrg --coverage-formatters clover
