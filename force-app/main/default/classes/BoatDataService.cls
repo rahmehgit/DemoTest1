@@ -96,6 +96,7 @@ public with sharing class BoatDataService {
             query += 'WHERE BoatType__c = :boatTypeId ';
         }
         query += ' WITH SECURITY_ENFORCED ORDER BY DISTANCE(Geolocation__c, GEOLOCATION(:latitude, :longitude), \'mi\') LIMIT 10';
+        system.debug('query is:' + query);
         return JSON.serialize(Database.query(query));
     }
 
