@@ -44,18 +44,18 @@ jobs:
           sf --help
 
       - name: Install the SFDX CLI Scanner
-         run: |
-        echo 'y' | sf plugins install @salesforce/sfdx-scanner
+        run: |
+          echo 'y' | sf plugins install @salesforce/sfdx-scanner
 
 
       - name: Run SFDX CLI Scanner
         run: |
-        sf scanner run -f html -t "force-app" -e "eslint,retire-js,pmd,cpd" -c "Design,Best Practices,Code Style,Performance,Security" --outfile reports/scan-reports.html
+          sf scanner run -f html -t "force-app" -e "eslint,retire-js,pmd,cpd" -c "Design,Best Practices,Code Style,Performance,Security" --outfile reports/scan-reports.html
 
       - uses: actions/upload-artifact@v3
-      with:
-      name: cli-scan-report
-      path: reports/scan-reports.html
+        with:
+        name: cli-scan-report
+        path: reports/scan-reports.html
           
       - name: Install the sfdx-git-delta plugin
         run: |
