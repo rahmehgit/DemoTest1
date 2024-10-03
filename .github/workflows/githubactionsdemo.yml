@@ -50,7 +50,8 @@ jobs:
 
       - name: Run SFDX CLI Scanner
         run: |
-          sf scanner run -f html -t "force-app" -e "eslint,retire-js,pmd,cpd" -c "Design,Best Practices,Code Style,Performance,Security" --outfile /reports/scan-reports.html
+          mkdir reports
+          sf scanner run -f html -t "force-app" -e "eslint,retire-js,pmd,cpd" -c "Design,Best Practices,Code Style,Performance,Security" --outfile reports/scan-reports.html
 
       - uses: actions/upload-artifact@v3
         with:
