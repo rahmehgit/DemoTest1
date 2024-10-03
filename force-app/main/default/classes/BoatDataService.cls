@@ -26,6 +26,7 @@ public with sharing class BoatDataService {
                                     WHERE Id = :boatId 
                                     WITH SECURITY_ENFORCED];
         if (parentBoat.isEmpty()) {
+            system.debug('similar boats is:' + similarBoats);
             return similarBoats;
         }
         if (similarBy == LENGTH_TYPE) {
