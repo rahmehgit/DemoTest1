@@ -54,7 +54,7 @@ jobs:
           
       - name: Authenticate Salesforce ORG
         run: |
-          sf org login jwt --client-id ${{ secrets.HUB_CONSUMER_KEY }} --jwt-key-file  ${{ secrets.JWT_KEY_FILE }} --username ${{ secrets.HUB_USER_NAME }} --set-default --alias HubOrg --instance-url ${{ secrets.HUB_LOGIN_URL }}  
+          sf org login jwt --client-id ${{ secrets.HUB_CONSUMER_KEY }} --jwt-key-file  assets/server.key --username ${{ secrets.HUB_USER_NAME }} --set-default --alias HubOrg --instance-url ${{ secrets.HUB_LOGIN_URL }}  
       
       - name: Generate the package.xml for delta files
         run: |
