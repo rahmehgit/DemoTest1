@@ -91,4 +91,4 @@ jobs:
       
       - name: Validate PR against the Org
         run: |
-          sf project deploy start --manifest delta/package/package.xml  --dry-run  --testlevel RunLocalTests  --target-org HubOrg --coverage-formatters clover
+          sf project deploy start --manifest delta/package/package.xml  --dry-run  --test-level RunLocalTests  --target-org HubOrg --coverage-formatters clover
