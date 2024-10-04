@@ -89,6 +89,6 @@ jobs:
           echo "--- package.xml generated with added and modified metadata ---"
           cat delta/package/package.xml
       
-      - name: Deploy Delta components to Salesforce
+      - name: Validate PR against the Org
         run: |
-          sf project deploy start --manifest delta/package/package.xml  --checkonly --testlevel RunLocalTests  --json --target-org HubOrg --coverage-formatters clover
+          sf project deploy start --manifest delta/package/package.xml  --dry-run  --testlevel RunLocalTests  --target-org HubOrg --coverage-formatters clover
