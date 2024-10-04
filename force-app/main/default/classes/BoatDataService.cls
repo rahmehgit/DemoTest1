@@ -30,7 +30,6 @@ public with sharing class BoatDataService {
                                     WHERE Id = :boatId 
                                     WITH SECURITY_ENFORCED];
         if (parentBoat.isEmpty()) {
-            system.debug('similar boats is:' + similarBoats);
             return similarBoats;
         }
         if (similarBy == LENGTH_TYPE) {
@@ -67,7 +66,7 @@ public with sharing class BoatDataService {
     }
 
     public static List<BoatType__c> getBoatTypes() {
-        return [SELECT Name, Id FROM BoatType__c WITH SECURITY_ENFORCED ORDER BY Name];
+        return [SELECT Name, Id FROM BoatType__c LIMIT 1 WITH SECURITY_ENFORCED ORDER BY Name];
     }
 
     public static List<BoatReview__c> getAllReviews(Id boatId) {
@@ -100,7 +99,6 @@ public with sharing class BoatDataService {
             query += 'WHERE BoatType__c = :boatTypeId ';
         }
         query += ' WITH SECURITY_ENFORCED ORDER BY DISTANCE(Geolocation__c, GEOLOCATION(:latitude, :longitude), \'mi\') LIMIT 10';
-        system.debug('query is:' + query);
         return JSON.serialize(Database.query(query));
     }
 
@@ -110,7 +108,7 @@ public with sharing class BoatDataService {
             List<Boat__c>.class
         );
         
-        update boatsForUpdate;
+        database.update (boatsForUpdate, AccessLevel.User_mode);
         return 'Success: Boats updated successfully';
 
     }
