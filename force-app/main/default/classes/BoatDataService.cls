@@ -62,7 +62,7 @@ public with sharing class BoatDataService {
     }
 
     public static List<BoatType__c> getBoatTypes() {
-        return [SELECT Name, Id FROM BoatType__c WITH SECURITY_ENFORCED  ORDER BY Name LIMIT 1000];
+        return [SELECT Name, Id FROM BoatType__c WITH SECURITY_ENFORCED LIMIT 1000 ORDER BY Name ];
     }
 
     public static List<BoatReview__c> getAllReviews(Id boatId) {
