@@ -4,10 +4,6 @@ public with sharing class BoatDataService {
     public static final String PRICE_TYPE = 'Price'; 
     public static final String TYPE_TYPE = 'Type'; 
 
-    //Added a new comment for automatic deployment
-    //Added 2nd Comment
-    //Added 3rd Comment
-    //Added 4th Comment
     public static List<Boat__c> getBoats(String boatTypeId) {
         // Without an explicit boatTypeId, the full list is desired
         String query = 'SELECT '
@@ -19,7 +15,6 @@ public with sharing class BoatDataService {
             query += ' WHERE BoatType__c = :boatTypeId';
         }
         query += ' WITH SECURITY_ENFORCED ';
-
 
         return Database.query(query);
     }
@@ -67,7 +62,7 @@ public with sharing class BoatDataService {
     }
 
     public static List<BoatType__c> getBoatTypes() {
-        return [SELECT Name, Id FROM BoatType__c WITH SECURITY_ENFORCED  ORDER BY Name LIMIT 10];
+        return [SELECT Name, Id FROM BoatType__c WITH SECURITY_ENFORCED  ORDER BY Name LIMIT 1000];
     }
 
     public static List<BoatReview__c> getAllReviews(Id boatId) {
