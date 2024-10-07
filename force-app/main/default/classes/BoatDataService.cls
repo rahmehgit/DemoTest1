@@ -15,6 +15,7 @@ public with sharing class BoatDataService {
             query += ' WHERE BoatType__c = :boatTypeId';
         }
         query += ' WITH SECURITY_ENFORCED ';
+        system.debug('Query is:' + query);
 
         return Database.query(query);
     }
